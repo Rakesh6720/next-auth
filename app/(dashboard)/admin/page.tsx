@@ -4,9 +4,12 @@ import React from 'react'
 
 async function page() {
     const session = await getServerSession(authOptions);
-    console.log(session);
+
+    if (session?.user) {
+        return <h2 className='text-2xl'>Admin Page - Welcome back, {session?.user.username}!</h2>
+    }
     return (
-        <div>Welcome to admin, {session?.user.username}!</div>
+        <h2 className='text-2xl'>Please login to see this admin page</h2>
     )
 }
 
