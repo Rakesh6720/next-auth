@@ -6,7 +6,15 @@ import { signOut } from 'next-auth/react';
 
 function UserAccountNav() {
     return (
-        <Button onClick={() => signOut()} variant="destructive">Sign out</Button>
+        <Button
+            onClick={() => signOut({
+                redirect: true,
+                callbackUrl: `${window.location.origin}/sign-in`
+            })}
+            variant="destructive"
+        >
+            Sign out
+        </Button>
     )
 }
 

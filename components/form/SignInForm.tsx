@@ -45,6 +45,7 @@ function SignInForm() {
             console.log("There was an error signing in...");
             console.log(signInData?.error);
         } else {
+            router.refresh();
             router.push('/admin');
         }
     }

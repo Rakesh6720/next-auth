@@ -1,9 +1,8 @@
 import UserAccountNav from '@/components/UserAccountNav';
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { authOptions } from '@/lib/auth'
 import { HandMetal } from 'lucide-react'
 import { getServerSession } from 'next-auth'
-
 import Link from 'next/link'
 import React from 'react'
 
