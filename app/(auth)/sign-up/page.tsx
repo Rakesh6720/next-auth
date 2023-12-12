@@ -1,8 +1,9 @@
+import SignUpForm from '@/components/form/SignUpForm'
 import React from 'react'
 
 function page() {
     return (
-        <div className='bg-blue-400 w-full'>Sign up</div>
+        <div className='w-full'><SignUpForm /></div>
     )
 }
 
