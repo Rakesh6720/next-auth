@@ -1,8 +1,9 @@
+import SignInForm from '@/components/form/SignInForm'
 import React from 'react'
 
 function page() {
     return (
-        <div>Sign in</div>
+        <div className=''><SignInForm /></div>
     )
 }
 
