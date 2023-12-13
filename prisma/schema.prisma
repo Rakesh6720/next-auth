@@ -26,6 +26,7 @@ model Event {
   name        String
   date        String
   imageURL    String?
+  description String?
   organizer   User     @relation(fields: [organizerId], references: [id])
   organizerId Int
   attendees   User[]   @relation("attendees")

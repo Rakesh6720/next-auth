@@ -3,7 +3,7 @@
 import { db } from "./db"
 
 export async function createEvent(data: any) {
-    const { name, date, organizer, locationName, buildingNo, street, city, state, zip } = data;
+    const { name, date, imageURL, organizer, locationName, buildingNo, street, city, state, zip } = data;
 
     const existingLocation = await db.location.findFirst({
         where: {
@@ -57,6 +57,7 @@ export async function createEvent(data: any) {
         event = await db.event.create({
             data: {
                 name: name,
+                imageURL: imageURL,
                 organizerId: newOrganizer!.id,
                 locationId: location!.id,
                 date: date

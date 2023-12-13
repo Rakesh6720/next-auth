@@ -20,6 +20,7 @@ import { Event } from "@prisma/client";
 const formSchema = z.object({
     name: z.string(),
     date: z.string(),
+    imageURL: z.string(),
     organizer: z.string(),
     locationName: z.string(),
     buildingNo: z.string(),
@@ -43,7 +44,9 @@ function CreateEventForm({ session }: { session: Session }) {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const event = await createEvent(values);
-            console.log("record created successfully: ", event);
+            if (event) {
+                console.log("record created successfully: ", event);
+            }
         } catch (error) {
             console.log("Error creating event: ", error);
         }
@@ -87,6 +90,19 @@ function CreateEventForm({ session }: { session: Session }) {
                                 <FormLabel>Organizer Email:</FormLabel>
                                 <FormControl>
                                     <Input placeholder={user.email!} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="imageURL"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Image URL:</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="http://www.example.com" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
