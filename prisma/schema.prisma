@@ -25,6 +25,7 @@ model Event {
   id          Int      @id @default(autoincrement())
   name        String
   date        String
+  imageURL    String?
   organizer   User     @relation(fields: [organizerId], references: [id])
   organizerId Int
   attendees   User[]   @relation("attendees")
