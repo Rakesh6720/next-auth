@@ -71,6 +71,25 @@ export async function createEvent(data: any) {
 }
 
 export async function getAllEvents() {
-    const events = await db.event.findMany();
-    return events;
+    try {
+        const events = await db.event.findMany();
+        return events;
+    } catch (err) {
+        console.log("There was an error fetching events: ", err)
+    }
+
+}
+
+export async function getEventById(id: number) {
+    try {
+        const event = await db.event.findUnique({
+            where: {
+                id
+            }
+        })
+        return { event }
+    } catch (err) {
+        console.log("There was an error fetching an eveng with that id: ", err);
+        return { event: null, message: "There was an error fetching event" }
+    }
 }

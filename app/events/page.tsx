@@ -10,7 +10,7 @@ async function page() {
     //const image: UnsplashImage = await response.json();
     return (
         <div className='grid grid-cols-4 gap-8 w-full h-full mt-[100px] p-10'>
-            {events.map((event: Event) => (
+            {events && events.map((event: Event) => (
                 <EventCard key={event.id} event={event} />
             ))}
         </div>
