@@ -24,15 +24,18 @@ model User {
 model Event {
   id          Int      @id @default(autoincrement())
   name        String
+  date        DateTime
   organizer   User     @relation(fields: [organizerId], references: [id])
   organizerId Int
   attendees   User[]   @relation("attendees")
   location    Location @relation(fields: [locationId], references: [id])
   locationId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Location {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   buildingNo String
   street     String
@@ -40,4 +43,6 @@ model Location {
   state      String
   zip        String
   events     Event[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
