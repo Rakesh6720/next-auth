@@ -5,31 +5,40 @@ import { db } from "./db"
 export async function createEvent(data: any) {
     const { name, date, organizer, locationName, buildingNo, street, city, state, zip } = data;
 
-    let location;
-    try {
-        location = await db.location.create({
-            data: {
-                name: locationName,
-                buildingNo: buildingNo,
-                street: street,
-                city: city,
-                state: state,
-                zip: zip
-            }
-        });
-    } catch (error) {
-        console.log("There was an error creating the location: ", error);
-    }
+    const existingLocation = await db.location.findFirst({
+        where: {
+            name: locationName
+        }
+    })
 
-    let newLocation;
-    try {
-        newLocation = await db.location.findFirst({
-            where: {
-                name: locationName
-            }
-        });
-    } catch (error) {
-        console.log("There was an error fetching the location details: ", error);
+    const doesLocationExist: boolean = existingLocation ? true : false;
+    let location;
+
+    if (!doesLocationExist) {
+        try {
+            location = await db.location.create({
+                data: {
+                    name: locationName,
+                    buildingNo: buildingNo,
+                    street: street,
+                    city: city,
+                    state: state,
+                    zip: zip
+                }
+            });
+        } catch (error) {
+            console.log("There was an error creating the location: ", error);
+        }
+    } else {
+        try {
+            location = await db.location.findFirst({
+                where: {
+                    name: locationName
+                }
+            });
+        } catch (error) {
+            console.log("There was an error fetching the location details: ", error);
+        }
     }
 
     let newOrganizer;
@@ -49,7 +58,7 @@ export async function createEvent(data: any) {
             data: {
                 name: name,
                 organizerId: newOrganizer!.id,
-                locationId: newLocation!.id,
+                locationId: location!.id,
                 date: date
             }
         });

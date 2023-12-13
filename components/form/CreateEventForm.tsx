@@ -35,7 +35,7 @@ function CreateEventForm({ session }: { session: Session }) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: '',
-            date: Date.now().toLocaleString(),
+            date: new Date(Date.now()).toLocaleDateString(),
             organizer: user.email!
         }
     });
