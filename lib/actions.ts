@@ -50,6 +50,7 @@ export async function createEvent(data: any) {
                 name: name,
                 organizerId: newOrganizer!.id,
                 locationId: newLocation!.id,
+                date: date
             }
         });
     } catch (error) {
