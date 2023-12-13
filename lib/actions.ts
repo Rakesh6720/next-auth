@@ -68,3 +68,8 @@ export async function createEvent(data: any) {
 
     return { event };
 }
+
+export async function getAllEvents() {
+    const events = await db.event.findMany();
+    return events;
+}
