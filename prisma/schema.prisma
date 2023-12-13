@@ -11,10 +11,33 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  username        String   @unique
+  password        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  eventsOrganized Event[]
+  eventsAttended  Event[]  @relation("attendees")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  name        String
+  organizer   User     @relation(fields: [organizerId], references: [id])
+  organizerId Int
+  attendees   User[]   @relation("attendees")
+  location    Location @relation(fields: [locationId], references: [id])
+  locationId  Int
+}
+
+model Location {
+  id         Int     @id @default(autoincrement())
+  name       String
+  buildingNo String
+  street     String
+  city       String
+  state      String
+  zip        String
+  events     Event[]
 }
