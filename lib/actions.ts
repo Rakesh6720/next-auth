@@ -1,7 +1,7 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { db } from "./db"
+import { db } from "./db";
 
 export async function createEvent(data: any) {
   const {
@@ -83,72 +83,70 @@ export async function createEvent(data: any) {
 }
 
 export async function getAllEvents() {
-    try {
-        const events = await db.event.findMany({
-            include: {
-                attendees: true
-            }
-        });
-        console.log("Results from All Events: ", events);
-        return events;
-    } catch (err) {
-        console.log("There was an error fetching events: ", err)
-    }
-
+  try {
+    const events = await db.event.findMany({
+      include: {
+        attendees: true,
+      },
+    });
+    console.log("Results from All Events: ", events);
+    return events;
+  } catch (err) {
+    console.log("There was an error fetching events: ", err);
+  }
 }
 
 export async function getEventById(id: number) {
-    try {
-        const event = await db.event.findUnique({
-            where: {
-                id
-            }
-        })
-        return { event }
-    } catch (err) {
-        console.log("There was an error fetching an eveng with that id: ", err);
-        return { event: null, message: "There was an error fetching event" }
-    }
+  try {
+    const event = await db.event.findUnique({
+      where: {
+        id,
+      },
+    });
+    return { event };
+  } catch (err) {
+    console.log("There was an error fetching an eveng with that id: ", err);
+    return { event: null, message: "There was an error fetching event" };
+  }
 }
 export async function addUserToEvent(eventId: number) {
-    const session = await getServerSession();
-    let user;
+  const session = await getServerSession();
+  let user;
 
-    if (session) {
-        const userFromSession = session.user;
-        try {
-            user = await db.user.findUnique({
-                where: {
-                    email: userFromSession.email!
-                }
-            })
-        } catch (err) {
-            console.log("error fetching user to create attendee record: ", err);
-        }
-    } else {
-        console.log("session does not exist: ", session);
+  if (session) {
+    const userFromSession = session.user;
+    try {
+      user = await db.user.findUnique({
+        where: {
+          email: userFromSession.email!,
+        },
+      });
+    } catch (err) {
+      console.log("error fetching user to create attendee record: ", err);
     }
+  } else {
+    console.log("session does not exist: ", session);
+  }
 
-    if (user) {
-        try {
-            const updateEvent = await db.event.update({
-                where: {
-                    id: eventId
-                },
-                data: {
-                    attendees: {
-                        create: [
-                            {
-                                userId: user.id,
-                            }
-                        ]
-                    }
-                }
-            })
-            return updateEvent;
-        }
-        catch (err) {
-            console.log("There was an error updating event attendees: ", err);
-        }
+  if (user) {
+    try {
+      const updateEvent = await db.event.update({
+        where: {
+          id: eventId,
+        },
+        data: {
+          attendees: {
+            create: [
+              {
+                userId: user.id,
+              },
+            ],
+          },
+        },
+      });
+      return updateEvent;
+    } catch (err) {
+      console.log("There was an error updating event attendees: ", err);
     }
+  }
 }
