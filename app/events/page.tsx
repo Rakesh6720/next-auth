@@ -8,7 +8,7 @@ async function page() {
     return (
         <div className='grid grid-cols-4 gap-8 w-full h-full mt-[100px] p-10'>
             {events && events.map((event) => (
-                <div>
+                <div key={event.id}>
                     <EventCard key={event.id} event={event} />
                 </div>
             ))}
