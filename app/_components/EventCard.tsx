@@ -1,25 +1,19 @@
-import { UnsplashImage } from '@/types/unsplash-image'
-import { Event } from '@prisma/client'
-import Image from 'next/image'
-import React from 'react'
+"use client";
 
-function EventCard({ event, image }: { event: Event, image?: UnsplashImage }) {
+import { Event, MembersAttendingEvents, User } from '@prisma/client'
+import { useRouter } from 'next/navigation';
 
-    let width;
-    let height;
+type Props = {
+    event: Event & { attendees: MembersAttendingEvents[] }
+}
 
-    if (image) {
-        width = Math.min(500, image.width);
-        height = Math.min(500, image.height);
-    }
-
+function EventCard({ event }: Props) {
+    const router = useRouter();
 
     return (
-        <div className="bg-red-500">
-            {image && (
-                <Image src={image.urls.raw} alt={event.name} width={width} height={height} className='object-cover' />
-            )}
+        <div className="bg-red-500 cursor-pointer" onClick={() => router.push(`/events/${event.id}`)}>
             {event.name}
+            <p>Number Attending: {event.attendees.length}</p>
         </div>
     )
 }
