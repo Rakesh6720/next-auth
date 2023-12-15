@@ -3,7 +3,7 @@
 import { getServerSession } from "next-auth";
 import { db } from "./db";
 import { AttendeeResponse } from "@/types/attendee-response";
-import { MembersAttendingEvents, User } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function createEvent(data: any) {
     const {
@@ -86,12 +86,7 @@ export async function createEvent(data: any) {
 
 export async function getAllEvents() {
     try {
-        const events = await db.event.findMany({
-            include: {
-                attendees: true,
-            },
-        });
-        console.log("Results from All Events: ", events);
+        const events = await db.event.findMany({});
         return events;
     } catch (err) {
         console.log("There was an error fetching events: ", err);
@@ -136,6 +131,37 @@ export async function addUserToEvent(eventId: number): Promise<AttendeeResponse>
         }
     }
 
+    const event = await db.event.findUnique({
+        where: {
+            id: eventId
+        }
+    });
+
+    if (!event) {
+        return {
+            status: 400,
+            error: "Event not found",
+            ok: false,
+            event: null
+        }
+    }
+
+    const isUserAlreadyAttendingEvent = await isUserAttendingEvent(event.id);
+    console.log("Is user already attending event? ", isUserAlreadyAttendingEvent);
+
+    if (isUserAlreadyAttendingEvent.data) {
+        return {
+            status: 400,
+            error: "User is already attending event",
+            ok: false,
+            event: event
+        }
+    } else {
+        console.log("User is NOT already attending event");
+    }
+
+    console.log("event attendees: ", event.attendees);
+
     if (user) {
         try {
             const updateEvent = await db.event.update({
@@ -144,11 +170,7 @@ export async function addUserToEvent(eventId: number): Promise<AttendeeResponse>
                 },
                 data: {
                     attendees: {
-                        create: [
-                            {
-                                userId: user.id,
-                            },
-                        ],
+                        push: user.id
                     },
                 },
             });
@@ -213,9 +235,6 @@ export async function removeUserFromEvent(eventId: number) {
     const event = await db.event.findUnique({
         where: {
             id: eventId
-        },
-        include: {
-            attendees: true
         }
     });
 
@@ -228,41 +247,52 @@ export async function removeUserFromEvent(eventId: number) {
         }
     }
 
-    event.attendees.filter((x) => x.userId !== userId)
+    console.log("Events from remove user function on server: ", event);
 
-    const updatedEvent = await db.event.upsert({
+    const usersAttending = event.attendees.filter(x => x === userId);
+
+    console.log("Users attending from actions: ", usersAttending);
+
+    await db.event.update({
+        where: { id: event.id },
+        data: {
+            attendees: {
+                set: usersAttending
+            }
+        }
+    })
+
+    const updatedEvent = await db.event.findUnique({
         where: {
             id: event.id
-        },
-        update: {
-            attendees: event.attendees
-        },
-    })
+        }
+    });
+
+    console.log("Updated event after removing user: ", updatedEvent);
 
     return {
         status: 200,
         error: null,
         ok: true,
-        data: event
+        data: updatedEvent
     }
 }
 
 export async function isUserAttendingEvent(eventId: number) {
-    const { data: user, status, ok, error } = await getUserFromSession();
-    if (!user) {
-        return {
-            status,
-            error,
-            ok,
-            data: null
+    const session = await getServerSession();
+
+    const user = await db.user.findUnique({
+        where: {
+            email: session?.user.email!
         }
-    }
-    const userId = parseInt(user.id);
+    })
+
     const event = await db.event.findUnique({
         where: {
             id: eventId
         },
-        include: {
+        select: {
+            id: true,
             attendees: true
         }
     });
@@ -272,17 +302,20 @@ export async function isUserAttendingEvent(eventId: number) {
             status: 400,
             error: "An event with that id was not found.",
             ok: false,
-            data: null
+            data: false
         }
     }
 
-    let found;
-    for (let i = 0; i < event?.attendees.length; i++) {
-        if (event?.attendees[i].userId == userId) {
-            found = true;
-            break;
-        }
+    const indexOfUser = event.attendees.indexOf(user!.id);
+
+    let found = true;
+
+    if (indexOfUser <= -1) {
+        found = false;
+        console.log("Found equals: ", found);
     }
+
+    console.log("Event equals: ", event);
 
     return {
         status: 200,

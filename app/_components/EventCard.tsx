@@ -1,10 +1,10 @@
 "use client";
 
-import { Event, MembersAttendingEvents, User } from '@prisma/client'
+import { Event } from '@prisma/client'
 import Link from 'next/link';
 
 type Props = {
-    event: Event & { attendees: MembersAttendingEvents[] }
+    event: Event
 }
 
 function EventCard({ event }: Props) {
