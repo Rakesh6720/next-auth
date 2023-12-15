@@ -12,40 +12,40 @@ datasource db {
 }
 
 model User {
-  id              Int                      @id @default(autoincrement())
-  email           String                   @unique
-  username        String                   @unique
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  username        String   @unique
   password        String
-  createdAt       DateTime                 @default(now())
-  updatedAt       DateTime                 @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   eventsOrganized Event[]
-  eventsAttended  MembersAttendingEvents[]
+  eventsAttended  Int[]
 }
 
 model Event {
-  id          Int                      @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   date        String
   imageURL    String?
   description String?
-  organizer   User                     @relation(fields: [organizerId], references: [id])
+  organizer   User     @relation(fields: [organizerId], references: [id])
   organizerId Int
-  attendees   MembersAttendingEvents[]
-  location    Location                 @relation(fields: [locationId], references: [id])
+  attendees   Int[]
+  location    Location @relation(fields: [locationId], references: [id])
   locationId  Int
-  createdAt   DateTime                 @default(now())
-  updatedAt   DateTime                 @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model MembersAttendingEvents {
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
-  Event      Event    @relation(fields: [eventId], references: [id])
-  eventId    Int
-  assignedAt DateTime @default(now())
+// model MembersAttendingEvents {
+//   user       User     @relation(fields: [userId], references: [id])
+//   userId     Int
+//   Event      Event    @relation(fields: [eventId], references: [id])
+//   eventId    Int
+//   assignedAt DateTime @default(now())
 
-  @@id([userId, eventId])
-}
+//   @@id([userId, eventId])
+// }
 
 model Location {
   id         Int      @id @default(autoincrement())
