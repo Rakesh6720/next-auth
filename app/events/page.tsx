@@ -6,7 +6,7 @@ async function page() {
     const events = await getAllEvents();
 
     return (
-        <div className='grid grid-cols-4 gap-8 w-full h-full mt-[100px] p-10'>
+        <div className='w-full h-full mt-[10rem]'>
             {events && events.map((event) => (
                 <div key={event.id}>
                     <EventCard key={event.id} event={event} />

@@ -1,7 +1,6 @@
 import UserAccountNav from '@/components/UserAccountNav';
 import { buttonVariants } from '@/components/ui/button'
 import { authOptions } from '@/lib/auth'
-import { HandMetal } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
@@ -11,7 +10,10 @@ async function Navbar() {
     return (
         <div className='bg-zinc-100 py-2 border-b border-s-zinc-200 fixed top-0 w-full z-10'>
             <div className='container flex items-center justify-between'>
-                <Link href="/"><HandMetal /></Link>
+                <div className='flex justify-between gap-x-12'>
+                    <Link href="/">Home</Link>
+                    <Link href="/events">Events</Link>
+                </div>
                 {session?.user ? (
                     <UserAccountNav />
                 ) : (

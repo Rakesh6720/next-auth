@@ -98,7 +98,7 @@ export async function getEventById(id: number) {
         const event = await db.event.findUnique({
             where: {
                 id,
-            },
+            }                            
         });
         return { event };
     } catch (err) {
