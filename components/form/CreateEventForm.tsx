@@ -17,11 +17,14 @@ import { Button } from "../ui/button";
 import { createEvent } from "@/lib/actions";
 import { Event } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { UploadButton } from "@/utils/uploadthing";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
     name: z.string(),
     date: z.string(),
-    imageURL: z.string(),
+    description: z.string(),    
     organizer: z.string(),
     locationName: z.string(),
     buildingNo: z.string(),
@@ -32,6 +35,7 @@ const formSchema = z.object({
 })
 
 function CreateEventForm({ session }: { session: Session }) {
+    const [imageURL, setImageURL] = useState("");
     const router = useRouter();
     const user = session.user;
     const form = useForm<z.infer<typeof formSchema>>({
@@ -44,6 +48,8 @@ function CreateEventForm({ session }: { session: Session }) {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        
+        console.log("Values: ", values);
         try {
             await createEvent(values);
             router.push("/events");
@@ -95,14 +101,39 @@ function CreateEventForm({ session }: { session: Session }) {
                             </FormItem>
                         )}
                     />
-                    <FormField
+                    {/* <FormField
                         control={form.control}
-                        name="imageURL"
+                        name="picture"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Image URL:</FormLabel>
+                                <FormLabel>Picture:</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="http://www.example.com" {...field} />
+                                    <Input type="file" id="picture" {...field}/>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    /> */}
+                    {/* <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res: any) => {
+                            // Do something with the response
+                            console.log("Files: ", res[0].url);
+                            setImageURL(res[0].url);
+                        }}
+                        onUploadError={(error: Error) => {
+                            // Do something with the error.
+                            alert(`ERROR! ${error.message}`);
+                        }}
+                    /> */}
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Description:</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder="Type your message here." {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

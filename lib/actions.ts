@@ -9,7 +9,7 @@ export async function createEvent(data: any) {
     const {
         name,
         date,
-        imageURL,
+        description,
         organizer,
         locationName,
         buildingNo,
@@ -71,7 +71,7 @@ export async function createEvent(data: any) {
         event = await db.event.create({
             data: {
                 name: name,
-                imageURL: imageURL,
+                description: description,
                 organizerId: newOrganizer!.id,
                 locationId: location!.id,
                 date: date,
