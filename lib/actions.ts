@@ -203,7 +203,7 @@ export async function addUserToEvent(eventId: number): Promise<AttendeeResponse>
     }
 }
 
-async function getUserFromSession() {
+export async function getUserFromSession() {
     const session = await getServerSession();
     const user = session?.user;
     if (!user) {
