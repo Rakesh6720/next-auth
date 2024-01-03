@@ -16,6 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createEvent } from "@/lib/actions";
 import { Event } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string(),
@@ -31,6 +32,7 @@ const formSchema = z.object({
 })
 
 function CreateEventForm({ session }: { session: Session }) {
+    const router = useRouter();
     const user = session.user;
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -43,10 +45,8 @@ function CreateEventForm({ session }: { session: Session }) {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const event = await createEvent(values);
-            if (event) {
-                console.log("record created successfully: ", event);
-            }
+            await createEvent(values);
+            router.push("/events");
         } catch (error) {
             console.log("Error creating event: ", error);
         }

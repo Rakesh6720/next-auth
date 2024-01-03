@@ -8,6 +8,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     const { id } = params;
     const { event } = await getEventById(+id);
     const session = await getServerSession();
+    console.log("Server session is: ", session);
 
     if (!event) {
         return <div>Loading...</div>
@@ -17,7 +18,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
     if (event && session) {
         return (
-            <EventDetailsComponent event={event} attending={isUserAttending.data} />
+            <EventDetailsComponent event={event} attending={isUserAttending.data} email={session.user.email} />
         )
     }
 

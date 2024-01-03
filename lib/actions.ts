@@ -81,7 +81,7 @@ export async function createEvent(data: any) {
         console.log("There was an error creating the event: ", error);
     }
 
-    return { event };
+    revalidatePath("/events");
 }
 
 export async function getAllEvents() {
@@ -175,6 +175,9 @@ export async function addUserToEvent(eventId: number): Promise<AttendeeResponse>
                 },
             });
             console.log("User successfully added to event");
+
+            revalidatePath(`/events/${event.id}`);     
+            
             return {
                 status: 201,
                 error: null,
@@ -269,6 +272,8 @@ export async function removeUserFromEvent(eventId: number) {
     });
 
     console.log("Updated event after removing user: ", updatedEvent);
+
+    revalidatePath(`/events/${event.id}`);
 
     return {
         status: 200,

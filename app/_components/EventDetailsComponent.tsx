@@ -7,58 +7,52 @@ import { useToast } from "@/components/ui/use-toast";
 import { Event } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
+import { isatty } from "tty";
 
 interface EventDetailsProps {
   event: Event
-  attending: boolean
+  attending: boolean,
+  email: string
 }
 
 
-function EventDetailsComponent({ event, attending }: EventDetailsProps) {
+function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
   const [isAttending, setIsAttending] = useState(attending);
   const { toast } = useToast();
 
   const addUser = async () => {
-    const response = await addUserToEvent(event.id);
+    const response = await addUserToEvent(event.id);    
     if (response.ok) {
-      console.log("Adding user successful: ", response.event);
       setIsAttending(true);
-      return;
     } else {
-      console.log("Error adding user to event");
-      console.error(response.error);
-      toast({
-        title: "Action Not Allowed",
-        description: response.error,
-        variant: "destructive"
-      })
-      setIsAttending(true);
+      console.log(response.error)
     }
   }
 
   const removeUser = async () => {
-    const response = await removeUserFromEvent(event.id);
-    const { data, error, status, ok } = response;
-    if (!ok) {
-      console.log("Error removing user: ", error);
-    } else {
-      console.log("Removing user successful: ", data);
+    const response = await removeUserFromEvent(event.id);    
+    if (response.ok) {
+      console.log("Removing user successful");
       setIsAttending(false);
+    } else {
+      console.log(response.error);
     }
   }
-
+  
   if (!event) {
     return <div>Loading...</div>
   }
 
   return (
-    <div>
+    <div className="flex flex-col">
       <h1>{event.name}</h1>
       {isAttending ? (
         <Button onClick={removeUser}>Unattend</Button>
       ) : (
         <Button onClick={addUser}>Attend</Button>
       )}
+      Organized by: {email}
     </div>
   );
 }
