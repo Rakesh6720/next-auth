@@ -13,7 +13,7 @@ async function page() {
 
     return (
         // <div><CreateEventForm session={session} /></div>
-        <div><CreateEventForm2 session={session}/></div>
+        <div><CreateEventForm session={session}/></div>
     )
 }
 

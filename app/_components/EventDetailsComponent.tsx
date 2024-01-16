@@ -45,12 +45,8 @@ function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
     return <div>Loading...</div>
   }
 
-  return (
-    <div className="flex flex-col relative w-full items-center">
-      <h1>{event.name}</h1>
-
-     <p>Organized by: {email}</p>
-      <div className="fixed bottom-10 flex w-full bg-red-400 m-auto justify-center items-center ">
+  return (  
+    <div className="fixed bottom-10 flex border-t w-full pt-5 justify-center items-center ">
         <div className="flex flex-col justify-center">
           <div className="px-10">
             <EventCardDate event={event}/>
@@ -61,12 +57,12 @@ function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
         </div>
         
       {isAttending ? (
-        <Button onClick={removeUser}>Unattend</Button>
+        <Button onClick={removeUser} className="bg-red-500">Unattend</Button>
       ) : (
-        <Button onClick={addUser}>Attend</Button>
+        <Button onClick={addUser} className="bg-green-500">Attend</Button>
       )}
-      </div>
     </div>
+    
   );
 }
 

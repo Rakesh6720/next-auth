@@ -18,12 +18,13 @@ import { createEvent } from "@/lib/actions";
 import { Event } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { UploadButton } from "@/utils/uploadthing";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
     name: z.string(),
     date: z.string(),
+    startTime: z.string(),
+    endTime: z.string(),
     description: z.string(),    
     organizer: z.string(),
     locationName: z.string(),
@@ -61,7 +62,7 @@ function CreateEventForm({ session }: { session: Session }) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <div className='space-y-5 mt-[300px]'>
+                <div className='space-y-5 px-10 mt-[5rem]'>
                     <FormField
                         control={form.control}
                         name="name"
@@ -82,7 +83,33 @@ function CreateEventForm({ session }: { session: Session }) {
                             <FormItem>
                                 <FormLabel>Event Date:</FormLabel>
                                 <FormControl>
-                                    <Input type="datetime-local" {...field} />
+                                    <Input type="date" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="startTime"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Start Time:</FormLabel>
+                                <FormControl>
+                                    <Input type="time" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="endTime"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>End Time:</FormLabel>
+                                <FormControl>
+                                    <Input type="time" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

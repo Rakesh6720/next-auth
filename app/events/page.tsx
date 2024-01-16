@@ -8,7 +8,7 @@ async function page() {
     if (!events) return <h3>No events</h3>
 
     return (
-        <div className='w-full h-full mt-[10rem]'>
+        <div className='mt-[4rem] mb-[3rem]'>
             {events && events.map((event) => (
                 <div key={event.id}>
                     <EventCard key={event.id} event={event} />

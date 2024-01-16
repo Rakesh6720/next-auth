@@ -15,7 +15,6 @@ interface IFormInput {
     city: string,
     state: string,
     zip: string,
-    image: File
 }
 
 export default function CreateEventForm2({session}: {session: Session}) {
@@ -56,8 +55,6 @@ export default function CreateEventForm2({session}: {session: Session}) {
         <input {...register("state")}/>
         <label>Zip</label>
         <input {...register("zip")}/>
-        <label>Image</label>
-        <input type="file" {...register("image")}/>
         <input type="submit"/>
     </form>
   )

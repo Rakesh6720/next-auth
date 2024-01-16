@@ -93,6 +93,33 @@ export async function getAllEvents() {
     }
 }
 
+export async function getLocationById(id: number | undefined) {
+    try {
+        const location = await db.location.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        return {location};
+    } catch (error) {
+        throw new Error("Location does not exist");
+    }
+}
+
+export async function getOrganizerName(id: number | undefined) {
+    try {
+        const organizerName = await db.user.findUnique({
+            where: {
+                id: id
+            }
+        })
+        return {organizerName};
+    } catch (err) {
+        throw new Error("Organizer does not exist");        
+    }
+}
+
 export async function getEventById(id: number) {
     try {
         const event = await db.event.findUnique({
