@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 import { isatty } from "tty";
+import EventCardDate from "./EventCardDate";
 
 interface EventDetailsProps {
   event: Event
@@ -45,14 +46,26 @@ function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative w-full items-center">
       <h1>{event.name}</h1>
+
+     <p>Organized by: {email}</p>
+      <div className="fixed bottom-10 flex w-full bg-red-400 m-auto justify-center items-center ">
+        <div className="flex flex-col justify-center">
+          <div className="px-10">
+            <EventCardDate event={event}/>
+          </div>          
+          <div className="px-10">
+            <p>{event.name}</p>
+          </div>
+        </div>
+        
       {isAttending ? (
         <Button onClick={removeUser}>Unattend</Button>
       ) : (
         <Button onClick={addUser}>Attend</Button>
       )}
-      Organized by: {email}
+      </div>
     </div>
   );
 }
