@@ -1,17 +1,19 @@
+"use client";
+
 import { Event } from '@prisma/client'
-import Link from 'next/link';
 import EventCardDate from './EventCardDate';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     event: Event
 }
 
-
-
 function EventCard({ event }: Props) {
     const attendees = event.attendees.length;
+    const router = useRouter();
+
     return (
-        <div className='w-[90%] flex-col border-t-2 border-neutral-400 my-2 p-3 mx-auto'>
+        <div onClick={() => router.push(`/events/${event.id}`)} className='w-[90%] flex-col border-t-2 border-neutral-400 my-2 p-3 mx-auto cursor-pointer'>
             <EventCardDate event={event}/>
             <h2 className='font-semibold'>{event.name}</h2>
             <p>{event.description}</p>

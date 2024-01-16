@@ -1,4 +1,5 @@
 import CreateEventForm from '@/components/form/CreateEventForm';
+import CreateEventForm2 from '@/components/form/CreateEventForm2';
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 import React from 'react'
@@ -11,7 +12,8 @@ async function page() {
     }
 
     return (
-        <div><CreateEventForm session={session} /></div>
+        // <div><CreateEventForm session={session} /></div>
+        <div><CreateEventForm2 session={session}/></div>
     )
 }
 

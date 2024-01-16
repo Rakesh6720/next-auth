@@ -13,7 +13,7 @@ import { isatty } from "tty";
 interface EventDetailsProps {
   event: Event
   attending: boolean,
-  email: string
+  email: string | undefined | null
 }
 
 
