@@ -16,7 +16,7 @@ function EventCard({ event }: Props) {
         <div onClick={() => router.push(`/events/${event.id}`)} className='w-[90%] flex-col border-t-2 border-neutral-400 my-2 p-3 mx-auto cursor-pointer'>
             <EventCardDate event={event}/>
             <h2 className='font-semibold'>{event.name}</h2>
-            <p>{event.description}</p>
+            <p>{event.description?.substring(0, 150)} ...</p>
             <p className='text-zinc-500 text-sm pt-10'>{attendees} {attendees == 0 || attendees > 1 ? "attendees" : "attendee"}</p>
         </div>
     )

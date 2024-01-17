@@ -20,21 +20,20 @@ const page = async ({ params }: { params: { id: string } }) => {
 
     if (event && session) {
         return (
-            <div className='px-5'>
-            <div className='mt-[5rem] px-10 border-b py-3'>
+            <div className='px-5 h-full mx-5'>
+            <div className='mt-[5rem] border-b py-3'>
                 <h1 className='text-3xl font-extrabold py-3'>{event.name}</h1>
                 <p>Hosted by:</p>
                 <p className='font-bold'>{organizerName?.email}</p>
             </div>
-            <div className='flex flex-col'> 
-            <p>Date: {new Date(event.startDateTime).toDateString()}</p>               
-                <p>Time: {new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(new Date(event.startDateTime))} - {new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(new Date(event.endDateTime))}</p>                
-                <p>Where: {location?.name}</p>
-                <p>{location?.buildingNo} {location?.street} · {location?.city}, {location?.state}</p>
+            <div className='flex flex-col mt-[2rem] leading-loose'> 
+                <p className=''><span className='font-semibold'>Date:</span> {new Date(event.startDateTime).toDateString()}</p>               
+                <p><span className='font-semibold'>Time:</span> {new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(new Date(event.startDateTime))} - {new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(new Date(event.endDateTime))}</p>                
+                <p><span className='font-semibold'>Venue:</span> {location?.name}</p>
+                <p><span className='font-semibold'>Address:</span> {location?.buildingNo} {location?.street} · {location?.city}, {location?.state}</p>
             </div>
-            <div>
-                <h3>Details:</h3>
-                <p>{event.description}</p>
+            <div className='leading-loose mb-[10rem]'>
+                <p><span className='font-semibold'>Details:</span> {event.description}</p>
             </div>
             <EventDetailsComponent event={event} attending={isUserAttending.data} email={session.user.email} />
             </div>
