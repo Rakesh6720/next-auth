@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
+import Search from './Search';
 
 async function Navbar() {
     const session = await getServerSession(authOptions);
@@ -13,6 +14,7 @@ async function Navbar() {
                 <div className='flex justify-between gap-x-12'>
                     <Link href="/">Home</Link>
                     <Link href="/events">Events</Link>
+                    <Search />
                 </div>
                 {session?.user ? (
                     <UserAccountNav />

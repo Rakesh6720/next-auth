@@ -85,9 +85,67 @@ export async function createEvent(data: any) {
     revalidatePath("/events");
 }
 
-export async function getAllEvents() {
+export async function getAllEvents(params: {query: string}) {
+    const {query: searchParams} = params;
+
+    if (!searchParams) {
+        return await db.event.findMany();
+    }
+
+    console.log("search params: ", searchParams)
     try {
-        const events = await db.event.findMany({});
+        const events = await db.event.findMany({
+            where: {
+                OR: [
+                 {
+                    name: {
+                        contains: searchParams,
+                        mode: "insensitive"
+                    }
+                 },
+                 {
+                    description: {
+                        contains: searchParams,
+                        mode: "insensitive"
+                    }
+                 },
+                 {
+                    location: {                   
+                        city: {
+                            contains: searchParams,
+                            mode: 'insensitive'
+                        }                                 
+                    }
+                 },
+                 {
+                    location: {
+                        name: {
+                            contains: searchParams,
+                            mode: 'insensitive'
+                        }
+                    }
+                 },
+                 {
+                    location: {
+                        zip: {
+                            contains: searchParams,
+                            mode: 'insensitive'
+                        }
+                    }
+                 },
+                 {
+                    location: {
+                        state: {
+                            contains: searchParams,
+                            mode: 'insensitive'
+                        }
+                    }
+                 }
+                ]
+            }
+        });
+        console.log(events);
+
         return events;
     } catch (err) {
         console.log("There was an error fetching events: ", err);

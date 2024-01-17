@@ -2,8 +2,11 @@ import { getAllEvents } from '@/lib/actions'
 import React from 'react'
 import EventCard from '../_components/EventCard';
 
-async function page() {
-    const events = await getAllEvents();
+async function page({searchParams} : { searchParams: {[key: string]: string | string[] | undefined}}) {
+    
+    console.log(searchParams);
+
+    const events = await getAllEvents(searchParams);
 
     if (!events) return <h3>No events</h3>
 
