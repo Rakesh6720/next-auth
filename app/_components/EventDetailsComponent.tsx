@@ -46,8 +46,8 @@ function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
   }
 
   return (  
-    <div className="fixed bottom-10 flex border-t w-full pt-5 justify-center items-center ">
-        <div className="flex flex-col justify-center">
+    <div className="fixed bottom-0 flex border-t w-full bg-white justify-center items-center ">
+        <div className="flex flex-col justify-center py-8">
           <div className="px-10">
             <EventCardDate event={event}/>
           </div>          

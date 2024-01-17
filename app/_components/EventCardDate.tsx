@@ -18,23 +18,23 @@ const months = [
 ];
 
 const formatEventDate = (event: Event) => {
-    const event_date = new Date(event.date);
-    const day_index = event_date.getDay();    
-    const day = dayNames[day_index];
-    const shortened_day = day.substring(0, 3).toUpperCase();
+    const event_start_date_time = new Date(event.startDateTime);
+    const start_day_index = event_start_date_time.getDay();    
+    const start_day = dayNames[start_day_index];
+    const shortened_start_day = start_day.substring(0, 3).toUpperCase();
     
-    const month_index = event_date.getMonth();
-    const month = months[month_index];
+    const start_month_index = event_start_date_time.getMonth();
+    const month = months[start_month_index];
     const shortened_month = month.substring(0,3).toUpperCase();
     
-    const date = event_date.getDate();    
+    const start_date = event_start_date_time.getDate();    
 
-    const time = new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(event_date);   
+    const time = new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(event_start_date_time);   
 
     return {
-        day: shortened_day,
+        day: shortened_start_day,
         month: shortened_month,
-        date: date,
+        date: start_date,
         time: time
     }
 }

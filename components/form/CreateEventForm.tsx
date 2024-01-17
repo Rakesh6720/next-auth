@@ -22,9 +22,8 @@ import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
     name: z.string(),
-    date: z.string(),
-    startTime: z.string(),
-    endTime: z.string(),
+    startDateTime: z.string(),
+    endDateTime: z.string(),
     description: z.string(),    
     organizer: z.string(),
     locationName: z.string(),
@@ -43,7 +42,7 @@ function CreateEventForm({ session }: { session: Session }) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: '',
-            date: new Date(Date.now()).toLocaleDateString(),
+            startDateTime: new Date(Date.now()).toLocaleDateString(),
             organizer: user.email!
         }
     });
@@ -78,12 +77,12 @@ function CreateEventForm({ session }: { session: Session }) {
                     />
                     <FormField
                         control={form.control}
-                        name="date"
+                        name="startDateTime"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Event Date:</FormLabel>
+                                <FormLabel>Start Time</FormLabel>
                                 <FormControl>
-                                    <Input type="date" {...field} />
+                                    <Input type="datetime-local" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -91,25 +90,12 @@ function CreateEventForm({ session }: { session: Session }) {
                     />
                     <FormField
                         control={form.control}
-                        name="startTime"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Start Time:</FormLabel>
-                                <FormControl>
-                                    <Input type="time" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="endTime"
+                        name="endDateTime"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>End Time:</FormLabel>
                                 <FormControl>
-                                    <Input type="time" {...field} />
+                                    <Input type="datetime-local" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

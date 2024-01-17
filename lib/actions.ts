@@ -8,7 +8,8 @@ import { revalidatePath } from "next/cache";
 export async function createEvent(data: any) {
     const {
         name,
-        date,
+        startDateTime,
+        endDateTime,
         description,
         organizer,
         locationName,
@@ -65,16 +66,16 @@ export async function createEvent(data: any) {
     } catch (error) {
         console.log("There was an error finding the user: ", error);
     }
-
-    let event;
+    
     try {
-        event = await db.event.create({
+        await db.event.create({
             data: {
                 name: name,
                 description: description,
                 organizerId: newOrganizer!.id,
                 locationId: location!.id,
-                date: date,
+                startDateTime: startDateTime,
+                endDateTime: endDateTime
             },
         });
     } catch (error) {
