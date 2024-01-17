@@ -24,7 +24,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             <div className='mt-[5rem] border-b py-3'>
                 <h1 className='text-3xl font-extrabold py-3'>{event.name}</h1>
                 <p>Hosted by:</p>
-                <p className='font-bold'>{organizerName?.email}</p>
+                <p className='font-bold'>{organizerName?.username}</p>
             </div>
             <div className='flex flex-col mt-[2rem] leading-loose'> 
                 <p className=''><span className='font-semibold'>Date:</span> {new Date(event.startDateTime).toDateString()}</p>               
