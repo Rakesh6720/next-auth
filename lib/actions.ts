@@ -369,6 +369,71 @@ export async function removeUserFromEvent(eventId: number) {
     }
 }
 
+export async function getEventsByOrganizer(email: string) {
+    
+    let user;
+
+    try {
+        user = await db.user.findUnique({
+            where: {
+                email: email
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        throw new Error("User not found in DB");
+    }
+
+    if (user) {
+        try {
+            const events = await db.event.findMany({
+                where: {
+                    organizerId: user.id
+                }
+            })
+    
+            return events;
+    
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error fetching events by organizer Id: ");            
+        }    
+    }    
+}
+
+export async function getEventsByAttendee(email: string) {
+    let user;
+
+    try {
+        user = await db.user.findUnique({
+            where: {
+                email: email
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        throw new Error("Error getting user from DB");
+    }
+
+    if (user) {
+        try {
+            const events = await db.event.findMany({
+                where: {
+                    attendees: {
+                        has: user.id
+                    }
+                }
+            })
+
+            return events;
+            
+        } catch(error)  {
+            console.error(error);
+            throw new Error("Event by attendee not found");
+        }                           
+    }
+}
+
 export async function isUserAttendingEvent(eventId: number) {
     const session = await getServerSession();
 

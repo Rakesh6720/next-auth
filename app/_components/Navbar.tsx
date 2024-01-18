@@ -14,6 +14,7 @@ async function Navbar() {
                 <div className='flex justify-between gap-x-12'>
                     <Link href="/">Home</Link>
                     <Link href="/events">Events</Link>
+                    <Link href="/events/myEvents">My Events</Link>
                     <Search />
                 </div>
                 {session?.user ? (
