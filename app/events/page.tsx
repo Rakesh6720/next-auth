@@ -1,10 +1,12 @@
 import { getAllEvents } from '@/lib/actions'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import EventCard from '../_components/EventCard';
+import { useSearchParams } from 'next/navigation';
 
-async function page({query}: any) {
-    
-    console.log(query);
+async function page({searchParams}: any) {    
+    const {query} = searchParams;
+
+    console.log("query equals: ", query);
 
     const events = await getAllEvents(query);
 

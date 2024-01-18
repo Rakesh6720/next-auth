@@ -2,15 +2,15 @@ import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth'
 import homeIcon from "@/public/images/irl_event.svg";
 import Image from 'next/image';
+import Link from 'next/link';
+import HomeSearch from './_components/HomeSearch';
 
 async function page() {
     const session = await getServerSession(authOptions);
 
     return (
         <div className='mt-[5rem]'>
-            <div id="search-home" className='flex justify-center m-3'>
-              <input type="text" placeholder='search events' className='px-2 py-1 border rounded-md w-2/3'/>
-            </div>
+            <HomeSearch/>
             <div id="hero" className='flex justify-center items-center p-5 mx-5'>
                 <div id="hero-left" className='flex flex-col w-2/3'>
                     <div id="headline">
@@ -20,7 +20,9 @@ async function page() {
                         <p>Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Meetup. Events are happening every day—sign up to join the fun.</p>
                     </div>
                     <div id="button" className='py-3'>
-                        <button className='bg-green-500 text-white p-3 rounded-md'>Join Meetup</button>
+                        {session ? <Link href="/events"><button className='bg-green-500 text-white p-3 rounded-md'>View Events</button></Link>
+                        : 
+                        <button className='bg-green-500 text-white p-3 rounded-md'>Join Meetup</button>}
                     </div>
                 </div>
                 <div id="hero-right">

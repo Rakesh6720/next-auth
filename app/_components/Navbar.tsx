@@ -7,7 +7,7 @@ import React from 'react'
 import Search from './Search';
 
 async function Navbar() {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);    
     return (
         <div className='bg-zinc-100 py-2 border-b border-s-zinc-200 fixed top-0 w-full z-10'>
             <div className='container flex items-center justify-between'>

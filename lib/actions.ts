@@ -85,34 +85,34 @@ export async function createEvent(data: any) {
     revalidatePath("/events");
 }
 
-export async function getAllEvents(params: {query: string}) {
-    const {query: searchParams} = params;
+export async function getAllEvents(query: string) {
 
-    if (!searchParams) {
+    console.log("search params: ", query);
+    
+    if (!query) {
         return await db.event.findMany();
     }
 
-    console.log("search params: ", searchParams)
     try {
         const events = await db.event.findMany({
             where: {
                 OR: [
                  {
                     name: {
-                        contains: searchParams,
+                        contains: query,
                         mode: "insensitive"
                     }
                  },
                  {
                     description: {
-                        contains: searchParams,
+                        contains: query,
                         mode: "insensitive"
                     }
                  },
                  {
                     location: {                   
                         city: {
-                            contains: searchParams,
+                            contains: query,
                             mode: 'insensitive'
                         }                                 
                     }
@@ -120,7 +120,7 @@ export async function getAllEvents(params: {query: string}) {
                  {
                     location: {
                         name: {
-                            contains: searchParams,
+                            contains: query,
                             mode: 'insensitive'
                         }
                     }
@@ -128,7 +128,7 @@ export async function getAllEvents(params: {query: string}) {
                  {
                     location: {
                         zip: {
-                            contains: searchParams,
+                            contains: query,
                             mode: 'insensitive'
                         }
                     }
@@ -136,7 +136,7 @@ export async function getAllEvents(params: {query: string}) {
                  {
                     location: {
                         state: {
-                            contains: searchParams,
+                            contains: query,
                             mode: 'insensitive'
                         }
                     }
