@@ -32,12 +32,16 @@ export default async function page() {
     });
 
   return (
-    <div className='mt-[5rem]'>
-        <div>
-            <h1>My Organized Events</h1>
-            {myOrganizedEvents?.map(event => (
-                <Link key={event.id} href={`/events/${event.id}`}>{event.name}</Link>
-            ))}
+    <div className='mt-[8rem] ml-[3rem] flex flex-col gap-3'>
+        <div className='border-black border shadow-md p-5 w-1/2 rounded-md'>
+            <h1 className='font-semibold underline text-xl mb-3'>My Organized Events</h1>
+            <ul>
+                {myOrganizedEvents?.map(event => (
+                    <li className='m-2'>
+                        <Link key={event.id} href={`/events/${event.id}`}>{event.name}</Link>
+                    </li>
+                ))}
+            </ul>
         </div>
         {isEarlierThanToday.length > 0 && 
             <div>
