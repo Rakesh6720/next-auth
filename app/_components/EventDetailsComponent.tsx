@@ -20,7 +20,17 @@ interface EventDetailsProps {
 
 function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
   const [isAttending, setIsAttending] = useState(attending);
+  const [hasEventPassed, setEventHasPassed] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {    
+    if (+new Date(event.endDateTime) < Date.now()) {
+      setEventHasPassed(true);      
+    } else {
+      setEventHasPassed(false);      
+    }
+    console.log("set event has passed: ", hasEventPassed);
+  }, [hasEventPassed])
 
   const addUser = async () => {
     const response = await addUserToEvent(event.id);    
@@ -55,12 +65,20 @@ function EventDetailsComponent({ event, attending, email }: EventDetailsProps) {
             <p>{event.name}</p>
           </div>
         </div>
+        {!hasEventPassed ? (
+          <div>
+            {isAttending ? (
+              <Button onClick={removeUser} className="bg-red-500">Unattend</Button>
+            ) : (
+              <Button onClick={addUser} className="bg-green-500">Attend</Button>
+            )}
+          </div>
+        ) : (
+          <div>
+            <Button disabled>Event has ended</Button>
+          </div>
+        )}
         
-      {isAttending ? (
-        <Button onClick={removeUser} className="bg-red-500">Unattend</Button>
-      ) : (
-        <Button onClick={addUser} className="bg-green-500">Attend</Button>
-      )}
     </div>
     
   );
