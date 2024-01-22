@@ -19,6 +19,7 @@ import { Event } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
+import { useToast } from "../ui/use-toast";
 
 const formSchema = z.object({
     name: z.string(),
@@ -36,6 +37,8 @@ const formSchema = z.object({
 
 function CreateEventForm({ session }: { session: Session }) {
     const [imageURL, setImageURL] = useState("");
+    const {toast} = useToast();
+    const [dateError, setDateError] = useState(false);
     const router = useRouter();
     const user = session.user;
     const form = useForm<z.infer<typeof formSchema>>({
@@ -50,6 +53,29 @@ function CreateEventForm({ session }: { session: Session }) {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         
         console.log("Values: ", values);
+
+        if (new Date(values.startDateTime) < new Date(Date.now())) {
+            console.log("Event cannot begin before today");
+            setDateError(true);
+            toast({
+                title: "Error",
+                description: "Event cannot occur prior to today",
+                variant: "destructive"
+            })
+            return;
+        }
+
+        if (new Date(values.endDateTime) < new Date(values.startDateTime)) {
+            console.log("Event cannot end before it begins");
+            setDateError(true);
+            toast({
+                title: "Error",
+                description: "Event cannot end before it begins",
+                variant: "destructive"
+            })
+            return;
+        }
+
         try {
             await createEvent(values);
             router.push("/events");
@@ -61,7 +87,7 @@ function CreateEventForm({ session }: { session: Session }) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <div className='space-y-5 px-10 mt-[5rem]'>
+                <div className="space-y-5 px-10 mt-[5rem]">
                     <FormField
                         control={form.control}
                         name="name"
@@ -74,7 +100,7 @@ function CreateEventForm({ session }: { session: Session }) {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    />                    
                     <FormField
                         control={form.control}
                         name="startDateTime"
@@ -87,7 +113,7 @@ function CreateEventForm({ session }: { session: Session }) {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    />                               
                     <FormField
                         control={form.control}
                         name="endDateTime"
