@@ -30,7 +30,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 <p className=''><span className='font-semibold'>Date:</span> {new Date(event.startDateTime).toDateString()}</p>               
                 <p><span className='font-semibold'>Time:</span> {new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(new Date(event.startDateTime))} - {new Intl.DateTimeFormat('en-US', {timeStyle: "short"}).format(new Date(event.endDateTime))}</p>                
                 <p><span className='font-semibold'>Venue:</span> {location?.name}</p>
-                <p><span className='font-semibold'>Address:</span> {location?.buildingNo} {location?.street} · {location?.city}, {location?.state}</p>
+                <p><span className='font-semibold'>Address:</span> {location?.buildingNo} {location?.street} · {location?.city}, {location?.state} · {location?.zip}</p>
             </div>
             <div className='leading-loose mb-[10rem]'>
                 <p><span className='font-semibold'>Details:</span> {event.description}</p>

@@ -8,9 +8,9 @@ async function page({searchParams}: any) {
 
     console.log("query equals: ", query);
 
-    const events = await getAllEvents(query);
+    let events = await getAllEvents(query);
 
-    if (!events) return <h3>No events</h3>
+    if (!events || events.length === 0) return <h3 className='m-[5rem]'>No events</h3>
 
     return (
         <div className='mt-[4rem] mb-[3rem]'>

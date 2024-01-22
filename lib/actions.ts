@@ -90,7 +90,11 @@ export async function getAllEvents(query: string) {
     console.log("search params: ", query);
     
     if (!query) {
-        return await db.event.findMany();
+        return await db.event.findMany({
+            orderBy: {
+                startDateTime: "asc"
+            }
+        });
     }
 
     try {
@@ -142,9 +146,11 @@ export async function getAllEvents(query: string) {
                     }
                  }
                 ]
+            },
+            orderBy: {
+                startDateTime: "asc"
             }
-        });
-        console.log(events);
+        });        
 
         return events;
     } catch (err) {
@@ -153,6 +159,11 @@ export async function getAllEvents(query: string) {
 }
 
 export async function getLocationById(id: number | undefined) {
+
+    if (!id) {
+        return {location: null}
+    }
+    
     try {
         const location = await db.location.findUnique({
             where: {
@@ -166,7 +177,12 @@ export async function getLocationById(id: number | undefined) {
     }
 }
 
-export async function getOrganizerName(id: number | undefined) {
+export async function getOrganizerName(id: number | undefined) {    
+
+    if (!id) {
+        return {organizerId: null}
+    }
+
     try {
         const organizerName = await db.user.findUnique({
             where: {
