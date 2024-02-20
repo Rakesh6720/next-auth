@@ -12,8 +12,8 @@ export default function Search() {
     useEffect(() => {
       searchInput.current?.addEventListener("keypress", (event) => {
         if (event.key === 'Enter') {
-          event.preventDefault();          
-          router.push(`/events?query=${searchTerm}`);
+          event.preventDefault();                   
+          router.push(`/events?query=${searchTerm}`);          
         }
       });      
     }, [searchInput, searchTerm])

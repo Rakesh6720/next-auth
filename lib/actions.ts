@@ -99,6 +99,9 @@ export async function getAllEvents(query: string) {
 
     try {
         const events = await db.event.findMany({
+            orderBy: {
+                startDateTime: "desc"
+            },
             where: {
                 OR: [
                  {
@@ -146,13 +149,11 @@ export async function getAllEvents(query: string) {
                     }
                  }
                 ]
-            },
-            orderBy: {
-                startDateTime: "asc"
-            }
+            }                        
         });        
-
+        revalidatePath("/events");
         return events;
+        
     } catch (err) {
         console.log("There was an error fetching events: ", err);
     }
